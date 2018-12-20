@@ -1,14 +1,16 @@
 if (isBuildModule.toBoolean()) {
     apply plugin: 'com.android.application'
+    apply plugin: 'org.greenrobot.greendao'
 } else {
     apply plugin: 'com.android.library'
 }
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-    useLibrary 'org.apache.http.legacy'
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
@@ -20,13 +22,13 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-                includeCompileClasspath true
-            }
-        }
+        //router的配置
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments = [moduleName: project.getName()]
+//                includeCompileClasspath true
+//            }
+//        }
     }
     buildTypes {
         debug {
@@ -50,11 +52,11 @@ android {
         }
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        disable "ResourceType"
-        abortOnError false
-    }
+//    lintOptions {
+//        disable 'InvalidPackage'
+//        disable "ResourceType"
+//        abortOnError false
+//    }
 
     sourceSets {
         main {
@@ -69,23 +71,17 @@ android {
 }
 
 dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //view
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     if (isBuildModule.toBoolean()) {
-        //view
-        annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
-            exclude module: 'support-annotations'
-        }
-        //tools
-        annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-        //test
-        debugImplementation rootProject.ext.dependencies["canary-debug"]
-        releaseImplementation rootProject.ext.dependencies["canary-release"]
-        testImplementation rootProject.ext.dependencies["canary-release"]
+        implementation project(":LibCommonSdk")
+        implementation project(":LibCommonRes")
+        implementation project(":LibCommonService")
     } else {
-        compileOnly rootProject.ext.dependencies["butterknife-compiler"]
-        compileOnly rootProject.ext.dependencies["dagger2-compiler"]
-        compileOnly rootProject.ext.dependencies["arouter-compiler"]
-        compileOnly rootProject.ext.dependencies["canary-debug"]
-        compileOnly rootProject.ext.dependencies["canary-release"]
+        api project(":LibCommonSdk")
+        api project(":LibCommonRes")
+        api project(":LibCommonService")
     }
 }

@@ -1,1 +1,1 @@
-include ':app', ':LibCommonSdk', ':AppCommonModule', ':LibCommonRes', ':LibCommonService', ':AppUserModule'
+include ':app', ':LibCommonSdk', ':LibCommonRes', ':LibCommonService', ':AppCommonModule', ':AppUserModule'
