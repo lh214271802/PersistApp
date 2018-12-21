@@ -32,6 +32,10 @@ public class RetrofitManager {
 
     }
 
+    public Retrofit getRetrofit() {
+        return retrofit;
+    }
+
     public static RetrofitManager getInstance(IBaseUrl iBaseUrl) {
         return ManagerHolder.get(iBaseUrl);
     }
