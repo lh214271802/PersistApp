@@ -1,12 +1,14 @@
 package com.lightheart.sdklib;
 
-import okhttp3.*;
+import com.blankj.utilcode.util.LogUtils;
+import okhttp3.Authenticator;
+import okhttp3.CookieJar;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,18 +18,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class RetrofitManager {
 
+    private Retrofit retrofit;
+
     private RetrofitManager() {
-        new Retrofit.Builder()
-                .baseUrl(ManagerHolder.baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(ManagerHolder.getClient())
-                .build();
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(ManagerHolder.baseUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(ManagerHolder.getClient())
+                    .build();
+        }
 
     }
 
     public static RetrofitManager getInstance(IBaseUrl iBaseUrl) {
         return ManagerHolder.get(iBaseUrl);
+    }
+
+    public static OkHttpClient getOkHttpClient() {
+        return ManagerHolder.getClient();
     }
 
     private static class ManagerHolder {
@@ -37,41 +47,25 @@ public class RetrofitManager {
 
         private synchronized static RetrofitManager get(IBaseUrl iBaseUrl) {
             baseUrl = iBaseUrl.getBaseUrl();
-            initClient();
+            if (okHttpClient == null) {
+                initClient();
+            }
             return INSTANCE;
         }
 
         private static void initClient() {
-            if (okHttpClient == null) {
-                OkHttpClient.Builder builder = new OkHttpClient.Builder();
-                builder.connectTimeout(10, TimeUnit.SECONDS)
-                        .readTimeout(10, TimeUnit.SECONDS)
-                        .writeTimeout(10, TimeUnit.SECONDS)
-                        .addInterceptor(new Interceptor() {
-                            @Override
-                            public Response intercept(Chain chain) throws IOException {
-                                return null;
-                            }
-                        })
-                        .addNetworkInterceptor(new Interceptor() {
-                            @Override
-                            public Response intercept(Chain chain) throws IOException {
-                                return null;
-                            }
-                        })
-                        .cookieJar(new CookieJar() {
-                            @Override
-                            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-
-                            }
-
-                            @Override
-                            public List<Cookie> loadForRequest(HttpUrl url) {
-                                return null;
-                            }
-                        })
-                        .build();
-            }
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.connectTimeout(15, TimeUnit.SECONDS)
+                    .readTimeout(15, TimeUnit.SECONDS)
+                    .writeTimeout(15, TimeUnit.SECONDS)
+                    .followRedirects(true)
+                    .retryOnConnectionFailure(true)
+                    .addNetworkInterceptor(new HeaderInterceptor())
+                    .addInterceptor(new HttpLoggingInterceptor(LogUtils::e)
+                            .setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .cookieJar(CookieJar.NO_COOKIES)//TODO cookie持久化以及证书验证，是否需要改进？
+                    .authenticator(Authenticator.NONE)
+                    .build();
         }
 
         private synchronized static OkHttpClient getClient() {
@@ -81,5 +75,4 @@ public class RetrofitManager {
             return okHttpClient;
         }
     }
-
 }
