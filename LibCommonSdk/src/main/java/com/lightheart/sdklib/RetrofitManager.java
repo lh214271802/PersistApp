@@ -19,14 +19,15 @@ import java.util.concurrent.TimeUnit;
 public class RetrofitManager {
 
     private Retrofit retrofit;
+    private static String baseUrl;
 
     private RetrofitManager() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(ManagerHolder.baseUrl)
+                    .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(ManagerHolder.getClient())
+                    .client(getOkHttpClient())
                     .build();
         }
 
@@ -37,7 +38,8 @@ public class RetrofitManager {
     }
 
     public static RetrofitManager getInstance(IBaseUrl iBaseUrl) {
-        return ManagerHolder.get(iBaseUrl);
+        baseUrl = iBaseUrl.getBaseUrl();
+        return ManagerHolder.get();
     }
 
     public static OkHttpClient getOkHttpClient() {
@@ -46,12 +48,10 @@ public class RetrofitManager {
 
     private static class ManagerHolder {
         private static final RetrofitManager INSTANCE = new RetrofitManager();
-        private static String baseUrl;
         private static OkHttpClient okHttpClient;
 
-        private synchronized static RetrofitManager get(IBaseUrl iBaseUrl) {
-            baseUrl = iBaseUrl.getBaseUrl();
-            if (okHttpClient == null) {
+        private synchronized static RetrofitManager get() {
+            if (okHttpClient==null) {
                 initClient();
             }
             return INSTANCE;
@@ -59,7 +59,7 @@ public class RetrofitManager {
 
         private static void initClient() {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.connectTimeout(15, TimeUnit.SECONDS)
+            okHttpClient = builder.connectTimeout(15, TimeUnit.SECONDS)
                     .readTimeout(15, TimeUnit.SECONDS)
                     .writeTimeout(15, TimeUnit.SECONDS)
                     .followRedirects(true)
@@ -72,8 +72,9 @@ public class RetrofitManager {
                     .build();
         }
 
+
         private synchronized static OkHttpClient getClient() {
-            if (okHttpClient == null) {
+            if (okHttpClient==null) {
                 initClient();
             }
             return okHttpClient;
