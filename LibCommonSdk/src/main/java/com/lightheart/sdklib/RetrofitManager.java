@@ -1,6 +1,9 @@
 package com.lightheart.sdklib;
 
 import com.blankj.utilcode.util.LogUtils;
+
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Authenticator;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
@@ -8,8 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author LiaoHui
@@ -37,6 +38,10 @@ public class RetrofitManager {
         return retrofit;
     }
 
+    public <T> T createService(Class<T> tClass) {
+        return retrofit.create(tClass);
+    }
+
     public static RetrofitManager getInstance(IBaseUrl iBaseUrl) {
         baseUrl = iBaseUrl.getBaseUrl();
         return ManagerHolder.get();
@@ -51,7 +56,7 @@ public class RetrofitManager {
         private static OkHttpClient okHttpClient;
 
         private synchronized static RetrofitManager get() {
-            if (okHttpClient==null) {
+            if (okHttpClient == null) {
                 initClient();
             }
             return INSTANCE;
@@ -74,7 +79,7 @@ public class RetrofitManager {
 
 
         private synchronized static OkHttpClient getClient() {
-            if (okHttpClient==null) {
+            if (okHttpClient == null) {
                 initClient();
             }
             return okHttpClient;
