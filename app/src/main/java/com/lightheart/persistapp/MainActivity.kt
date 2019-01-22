@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.lightheart.sdklib.RetrofitManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,7 +13,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         hello.setOnClickListener {
             Toast.makeText(this, "xixi", Toast.LENGTH_SHORT).show()
-            RetrofitManager.getInstance { "https://www.baidu.com" }.retrofit
         }
         test_view.animate()
                 .translationX(300F)
