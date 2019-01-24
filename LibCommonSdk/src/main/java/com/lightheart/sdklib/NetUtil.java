@@ -11,6 +11,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class NetUtil {
 
     private static Application mContext;
-    private static Retrofit retrofit;
+    private static final Map<String, Object> apiMap = new HashMap<>();
 
     public static void init(Application context) {
         mContext = context;
@@ -35,18 +37,19 @@ public class NetUtil {
         return Holder.mOkHttpClient;
     }
 
-    public static Retrofit getRetrofit(String baseUrl) {
-        retrofit = new Retrofit.Builder()
+    public static <T> T createApi(String baseUrl, Class<T> tClass) {
+        if (apiMap.containsKey(baseUrl)) {
+            return (T) apiMap.get(baseUrl);
+        }
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(getOkHttpClient())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
                 .build();
-        return retrofit;
-    }
-
-    public static <T> T getRequest(Class<T> tClass) {
-        return retrofit.create(tClass);
+        T t = retrofit.create(tClass);
+        apiMap.put(baseUrl, t);
+        return t;
     }
 
 
