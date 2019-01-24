@@ -24,10 +24,4 @@ dependencies {
 
     api rootProject.ext.dependencies["rxjava2"]
     api rootProject.ext.dependencies["rxandroid2"]
-
-    api rootProject.ext.dependencies["dagger2"]
-    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-    api rootProject.ext.dependencies["dagger2-android"]
-    api rootProject.ext.dependencies["dagger2-android-support"]
-    annotationProcessor rootProject.ext.dependencies["dagger2-android-processor"]
 }
