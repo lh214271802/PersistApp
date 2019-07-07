@@ -1,4 +1,4 @@
-package com.lightheart.reslib;
+package com.lightheart.reslib.view;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,6 +8,10 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.lightheart.reslib.R;
+import com.lightheart.reslib.R2;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

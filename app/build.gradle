@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.jakewharton.butterknife'
 
@@ -51,7 +48,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     if (isBuildModule.toBoolean()) {
         implementation project(":LibCommonSdk")
