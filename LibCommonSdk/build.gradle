@@ -24,4 +24,6 @@ dependencies {
 
     api rootProject.ext.dependencies["rxjava2"]
     api rootProject.ext.dependencies["rxandroid2"]
+    api rootProject.ext.dependencies["rxlifecycle2-components"]
+    api rootProject.ext.dependencies["rx-bus"]
 }

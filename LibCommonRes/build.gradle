@@ -15,4 +15,7 @@ dependencies {
 
     api rootProject.ext.dependencies["butterknife"]
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
+
+    api project(":LibCommonSdk")
+    api project(":LibCommonService")
 }

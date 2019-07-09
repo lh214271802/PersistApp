@@ -73,12 +73,8 @@ dependencies {
     //view
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     if (isBuildModule.toBoolean()) {
-        implementation project(":LibCommonSdk")
         implementation project(":LibCommonRes")
-        implementation project(":LibCommonService")
     } else {
-        api project(":LibCommonSdk")
         api project(":LibCommonRes")
-        api project(":LibCommonService")
     }
 }

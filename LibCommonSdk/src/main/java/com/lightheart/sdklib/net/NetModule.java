@@ -1,17 +1,22 @@
-package com.lightheart.sdklib.di.module;
+package com.lightheart.sdklib.net;
 
 import android.app.Application;
+
 import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.lightheart.sdklib.CommonParamsInterceptor;
-import okhttp3.*;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Authenticator;
+import okhttp3.Cache;
+import okhttp3.CookieJar;
+import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 public class NetModule {
 
