@@ -19,7 +19,7 @@ dependencies {
     api rootProject.ext.dependencies["support-v4"]
     api rootProject.ext.dependencies["cardview-v7"]
     api rootProject.ext.dependencies["recyclerview-v7"]
-//    api rootProject.ext.dependencies["photoview"]
+    api rootProject.ext.dependencies["photoview"]
     api rootProject.ext.dependencies["sonic"]
     api rootProject.ext.dependencies["recycler-adapter"]
     api rootProject.ext.dependencies["smart-refresh"]
