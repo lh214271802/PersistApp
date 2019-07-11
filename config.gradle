@@ -49,6 +49,7 @@ ext {
             "butterknife-compiler"     : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
             "pickerview"               : "com.contrarywind:Android-PickerView:3.2.5",
             "photoview"                : "com.github.chrisbanes:PhotoView:2.1.4",
+            "bannerview"               : "com.youth.banner:banner:1.4.10",
             "numberprogressbar"        : "com.daimajia.numberprogressbar:library:1.2@aar",
             "nineoldandroids"          : "com.nineoldandroids:library:2.4.0",
             "paginate"                 : "com.github.markomilos:paginate:0.5.1",
