@@ -1,9 +1,9 @@
 if (isBuildModule.toBoolean()) {
     apply plugin: 'com.android.application'
-    apply plugin: 'org.greenrobot.greendao'
 } else {
     apply plugin: 'com.android.library'
 }
+apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
